@@ -11,7 +11,7 @@
 
 <h3>To Execute </h3>
 <ul>
-<li>cd RESTAPI</li>
+<li>cd RestAPI</li>
 <li>python manage.py runserver </li>
 <strong>paste this url in browser</strong>
 <li>http://localhost:8000/ </li>
