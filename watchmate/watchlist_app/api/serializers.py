@@ -6,9 +6,11 @@ class MovieSerializer(serializers.Serializer):
     description = serializers.CharField()
     active = serializers.BooleanField()
     
+    # on create(post)
     def create(self,validated_data):
         return Movie.objects.create(**validated_data)
-        
+    
+    # on update(put)
     def update(self,instance, validated_data):
         instance.name = validated_data.get('name',instance.name)
         instance.description = validated_data.get('description',instance.description)
