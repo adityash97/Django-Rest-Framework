@@ -1,5 +1,8 @@
 from rest_framework import serializers
 from watchlist_app.models import Movie
+
+# serializers.Serializer
+"""
 class MovieSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     name = serializers.CharField()
@@ -18,3 +21,11 @@ class MovieSerializer(serializers.Serializer):
         instance.save()
         return instance
 
+"""
+
+# Model Serializer
+
+class MovieSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Movie
+        fields = '__all__'
