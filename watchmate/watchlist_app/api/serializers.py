@@ -26,6 +26,15 @@ class MovieSerializer(serializers.Serializer):
 # Model Serializer
 
 class MovieSerializer(serializers.ModelSerializer):
+    """
+    Serializer method field. Calculate something on the basis of method field and 
+    return as a field from serializer.
+    """
+    name_length = serializers.SerializerMethodField()
     class Meta:
         model = Movie
         fields = '__all__'
+        
+    def get_name_length(self,obj):
+        return len(obj.name)
+        
