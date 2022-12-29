@@ -1,7 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import status
-from yaml import serialize
+from rest_framework import generics,mixins,status
 from watchlist_app.models import WatchList,StreamPlatform,Review
 from .serializers import WatchListSerializer,StreamPlatformSerializer,ReviewSerializer
 
@@ -80,6 +79,8 @@ class StreamPlatformDetailsAPIView(APIView):
         queryset.delete()
         return Response({'msg':'Deleted Sucessfully'},status= status.HTTP_204_NO_CONTENT)
 
+"""
+# API View
 class ReviewAPIView(APIView):
     def get(self,request):
         queryset = Review.objects.all()
@@ -122,4 +123,32 @@ class ReviewDetiailsAPIView(APIView):
             return Response({'msg':'Does not exist.'},status=status.HTTP_404_NOT_FOUND)
         queryset.delete()
         return Response({'msg':'Deleted'},status=status.HTTP_204_NO_CONTENT)
-        
+"""
+
+"""
+Generic API View to help us to keep our code DRY(do not repeat yourself)
+"""
+
+class ReviewAPIView(generics.GenericAPIView,mixins.ListModelMixin, mixins.CreateModelMixin):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    
+    def get(self,request):
+        return self.list(request)
+    
+    def post(self,request):
+        return self.create(request)
+
+class ReviewDetiailsAPIView(generics.GenericAPIView,mixins.RetrieveModelMixin,mixins.UpdateModelMixin,mixins.DestroyModelMixin):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    
+    
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
