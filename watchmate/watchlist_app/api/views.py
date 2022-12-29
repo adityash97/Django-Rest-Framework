@@ -9,7 +9,7 @@ from .serializers import WatchListSerializer,StreamPlatformSerializer,ReviewSeri
 class  WatchListAPIView(APIView):
     def get(self,request):
         movies = WatchList.objects.all()
-        serializer = WatchListSerializer(movies,many=True)
+        serializer = WatchListSerializer(movies,many=True,context={'request': request})
         return Response(serializer.data)
     
     def post(self,request):
