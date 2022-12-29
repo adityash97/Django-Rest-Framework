@@ -35,7 +35,12 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class WatchListSerializer(serializers.ModelSerializer):
-    reviews = ReviewSerializer(many=True,read_only=True)
+    # reviews = ReviewSerializer(many=True,read_only=True)
+    reviews = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='review_details'
+    )
     class Meta:
         model = WatchList
         fields = '__all__'
