@@ -1,5 +1,7 @@
 from django.urls import path
-from .views import WatchListAPIView,WatchListDetailsAPIView,StreamPlatformAPIView,StreamPlatformDetailsAPIView,ReviewAPIView,ReviewDetiailsAPIView
+from .views import (WatchListAPIView,WatchListDetailsAPIView,
+                    StreamPlatformAPIView,StreamPlatformDetailsAPIView,
+                    ReviewAPIView,ReviewDetiailsAPIView,ReviewCreate)
 
 urlpatterns = [
     # Movie all
@@ -15,6 +17,8 @@ urlpatterns = [
     path('stream/<int:pk>/review/',ReviewAPIView.as_view(),name="stream-review-all"),
     # review details for a review
     path('stream/review/<int:pk>/',ReviewDetiailsAPIView.as_view(), name='stream-review-details'),
+    # create review for perticular movie
+    path('stream/<int:pk>/review-create/',ReviewCreate.as_view(),name="stream-review-create"),
     
     
 ]
