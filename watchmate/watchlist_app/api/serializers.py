@@ -31,7 +31,8 @@ class MovieSerializer(serializers.Serializer):
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
-        fields ='__all__'
+        # fields ='__all__'
+        exclude=('watchlist',)
 
 
 class WatchListSerializer(serializers.ModelSerializer):
@@ -39,7 +40,7 @@ class WatchListSerializer(serializers.ModelSerializer):
     reviews = serializers.HyperlinkedRelatedField(
         many=True,
         read_only=True,
-        view_name='review_details'
+        view_name='stream-review-details'
     )
     class Meta:
         model = WatchList
