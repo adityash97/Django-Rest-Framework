@@ -39,7 +39,7 @@ class WatchListSerializer(serializers.ModelSerializer):
     reviews = serializers.HyperlinkedRelatedField(
         many=True,
         read_only=True,
-        view_name='review_details'
+        view_name='stream-review-details'
     )
     class Meta:
         model = WatchList

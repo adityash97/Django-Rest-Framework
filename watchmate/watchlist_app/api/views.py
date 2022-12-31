@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import generics
 from rest_framework import generics,mixins,status
 from watchlist_app.models import WatchList,StreamPlatform,Review
 from .serializers import WatchListSerializer,StreamPlatformSerializer,ReviewSerializer
@@ -39,6 +40,8 @@ class WatchListDetailsAPIView(APIView):
         movies = WatchList.objects.get(pk=pk).delete()
         return Response({'msg':f'movie with ID :  {pk} is deleted'})
     
+"""
+#API View
 class StreamPlatformAPIView(APIView):
     def get(self,request):
         queryset = StreamPlatform.objects.all()
@@ -78,6 +81,16 @@ class StreamPlatformDetailsAPIView(APIView):
             return Response({'error':'Not Found'},status= status.HTTP_404_NOT_FOUND)
         queryset.delete()
         return Response({'msg':'Deleted Sucessfully'},status= status.HTTP_204_NO_CONTENT)
+"""
+
+# Concrete View Class
+class StreamPlatformAPIView(generics.ListCreateAPIView):
+    queryset = StreamPlatform.objects.all()
+    serializer_class = StreamPlatformSerializer
+
+class StreamPlatformDetailsAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = StreamPlatform.objects.all()
+    serializer_class = StreamPlatformSerializer
 
 """
 # API View
