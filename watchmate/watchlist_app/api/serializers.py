@@ -1,5 +1,4 @@
-from dataclasses import field
-from pyexpat import model
+
 from rest_framework import serializers
 from watchlist_app.models import WatchList,StreamPlatform,Review
 
@@ -49,7 +48,7 @@ class WatchListSerializer(serializers.ModelSerializer):
 
 
 class StreamPlatformSerializer(serializers.ModelSerializer):
-# class StreamPlatformSerializer(serializers.HyperlinkedModelSerializer):
+# class StreamPlatformSerializer(serializers.HyperlinkedModelSerializer):  # To send URL response
     '''The field name should be the : "related_name" of model field. As in this case it is : "watchlist" '''
     watchlist = WatchListSerializer(many=True, read_only = True)
     '''Control nested field''' 
