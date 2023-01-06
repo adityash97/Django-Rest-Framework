@@ -5,9 +5,11 @@ from rest_framework import generics,mixins,status
 from watchlist_app.models import WatchList,StreamPlatform,Review
 from .serializers import WatchListSerializer,StreamPlatformSerializer,ReviewSerializer
 from django.core.exceptions import ValidationError
+from rest_framework.permissions import IsAuthenticated
 
 
 class  WatchListAPIView(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self,request):
         movies = WatchList.objects.all()
         serializer = WatchListSerializer(movies,many=True,context={'request': request})
