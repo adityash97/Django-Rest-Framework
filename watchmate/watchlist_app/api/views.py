@@ -24,7 +24,7 @@ class  WatchListAPIView(APIView):
             return Response(serializer.errors)
     
 class WatchListDetailsAPIView(APIView):
-    
+    permission_classes = [IsAuthenticated]
     def get(self,request,pk):
         movies = WatchList.objects.get(pk=pk)
         serializer = WatchListSerializer(movies)
