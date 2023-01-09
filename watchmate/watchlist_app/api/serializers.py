@@ -28,6 +28,7 @@ class MovieSerializer(serializers.Serializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
+    review_user = serializers.StringRelatedField(read_only = True)
     class Meta:
         model = Review
         # fields ='__all__'
@@ -35,12 +36,12 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class WatchListSerializer(serializers.ModelSerializer):
-    # reviews = ReviewSerializer(many=True,read_only=True)
-    reviews = serializers.HyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        view_name='stream-review-details'
-    )
+    reviews = ReviewSerializer(many=True,read_only=True)
+    # reviews = serializers.HyperlinkedRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     view_name='stream-review-details'
+    # )
     class Meta:
         model = WatchList
         fields = '__all__'

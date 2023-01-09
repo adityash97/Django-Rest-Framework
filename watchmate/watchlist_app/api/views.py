@@ -5,7 +5,9 @@ from rest_framework import generics,mixins,status
 from watchlist_app.models import WatchList,StreamPlatform,Review
 from .serializers import WatchListSerializer,StreamPlatformSerializer,ReviewSerializer
 from django.core.exceptions import ValidationError
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
+from .permissions import AdminOrReadOnly,ReviewUserOrReadOnly
+from django.core.exceptions import ValidationError
 
 
 class  WatchListAPIView(APIView):
@@ -24,7 +26,7 @@ class  WatchListAPIView(APIView):
             return Response(serializer.errors)
     
 class WatchListDetailsAPIView(APIView):
-    
+    permission_classes = [IsAuthenticated]
     def get(self,request,pk):
         movies = WatchList.objects.get(pk=pk)
         serializer = WatchListSerializer(movies)
@@ -158,7 +160,7 @@ class ReviewAPIView(generics.ListAPIView):
 class ReviewDetiailsAPIView(generics.GenericAPIView,mixins.RetrieveModelMixin,mixins.UpdateModelMixin,mixins.DestroyModelMixin):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    
+    permission_classes = [ReviewUserOrReadOnly]
     
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
@@ -170,10 +172,25 @@ class ReviewDetiailsAPIView(generics.GenericAPIView,mixins.RetrieveModelMixin,mi
         return self.destroy(request, *args, **kwargs)
     
 class ReviewCreate(generics.CreateAPIView):
+    permission_classes=[IsAuthenticated]
     serializer_class = ReviewSerializer
-    def perform_create(self, serializer):
+    def perform_create(self, serializer): 
         pk = self.kwargs['pk']
-        movie = WatchList.objects.get(pk = pk)
-        serializer.save(watchlist=movie)
+        watchlist = WatchList.objects.get(pk = pk)
+        review_user = self.request.user
+        # one person can add only one review.
+        review_queryset = Review.objects.filter(watchlist=watchlist,review_user=review_user)
+        if review_queryset.exists():
+            raise ValidationError("You already have reveiwed this movie!")
+        
+        # update avg review and total review
+        if watchlist.number_rating == 0:
+            watchlist.avg_rating = serializer.validated_data['rating']
+        else:
+            watchlist.avg_rating = (watchlist.avg_rating+serializer.validated_data['rating'])/2
+        
+        watchlist.number_rating+=1
+        watchlist.save()
+        serializer.save(watchlist=watchlist,review_user=review_user)
                 
         

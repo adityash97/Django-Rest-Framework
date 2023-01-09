@@ -14,11 +14,11 @@ urlpatterns = [
     path('stream/<int:pk>',StreamPlatformDetailsAPIView.as_view(),name="stream_details"),
     
     # All reviews
-    path('stream/<int:pk>/review/',ReviewAPIView.as_view(),name="stream-review-all"),
+    path('<int:pk>/review/',ReviewAPIView.as_view(),name="stream-review-all"),
     # review details for a review
-    path('stream/review/<int:pk>/',ReviewDetiailsAPIView.as_view(), name='stream-review-details'),
+    path('review/<int:pk>/',ReviewDetiailsAPIView.as_view(), name='stream-review-details'),
     # create review for perticular movie
-    path('stream/<int:pk>/review-create/',ReviewCreate.as_view(),name="stream-review-create"),
+    path('<int:pk>/review-create/',ReviewCreate.as_view(),name="stream-review-create"),
     
     
 ]
