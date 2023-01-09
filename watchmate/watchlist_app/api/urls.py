@@ -11,7 +11,7 @@ urlpatterns = [
     #stream all
     path('stream/',StreamPlatformAPIView.as_view(),name="stream"),
     #stream details for a stream
-    path('stream/<int:pk>',StreamPlatformDetailsAPIView.as_view(),name="stream_details"),
+    path('stream/<int:pk>/',StreamPlatformDetailsAPIView.as_view(),name="stream_details"),
     
     # All reviews
     path('<int:pk>/review/',ReviewAPIView.as_view(),name="stream-review-all"),
